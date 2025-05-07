@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\2022202060017\\source\\repos\\appMulta\\appMulta\\appMulta.csproj": {}
+    "C:\\Users\\2022202060017\\Documents\\lpv2\\appMulta\\appMulta\\appMulta.csproj": {}
   },
   "projects": {
-    "C:\\Users\\2022202060017\\source\\repos\\appMulta\\appMulta\\appMulta.csproj": {
+    "C:\\Users\\2022202060017\\Documents\\lpv2\\appMulta\\appMulta\\appMulta.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\2022202060017\\source\\repos\\appMulta\\appMulta\\appMulta.csproj",
+        "projectUniqueName": "C:\\Users\\2022202060017\\Documents\\lpv2\\appMulta\\appMulta\\appMulta.csproj",
         "projectName": "appMulta",
-        "projectPath": "C:\\Users\\2022202060017\\source\\repos\\appMulta\\appMulta\\appMulta.csproj",
+        "projectPath": "C:\\Users\\2022202060017\\Documents\\lpv2\\appMulta\\appMulta\\appMulta.csproj",
         "packagesPath": "C:\\Users\\2022202060017\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\2022202060017\\source\\repos\\appMulta\\appMulta\\obj\\",
+        "outputPath": "C:\\Users\\2022202060017\\Documents\\lpv2\\appMulta\\appMulta\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
