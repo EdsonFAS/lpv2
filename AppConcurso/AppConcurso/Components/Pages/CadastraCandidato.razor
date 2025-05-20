@@ -1,0 +1,137 @@
+﻿@page "/cadastra-candidato"
+@using AppConcurso.Models;
+@using AppConcurso.Controllers;
+@inject CandidatoController candidatoController;
+@inject CargoController cargoController;
+@inject InscricaoController inscricaoController;
+@inject NavigationManager navegacao;
+@rendermode InteractiveServer
+
+<div class="container">
+    <h1>Cadastrar Candidato</h1>
+
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome</label>
+            <input @bind="candidato.nome_can" type="text" class="form-control" placeholder="Digite o nome do Candidato" name="nome" />
+        </div>
+        <div class="mb-3">
+            <label for="cpf" class="form-label">CPF</label>
+          <input @bind="candidato.cpf_can" type="text" class="form-control" placeholder="Digite o CPF do Candidato" name="cpf" />
+        </div>
+        <div class="mb-3">
+        <label for="data_nasc_can" class="form-label">Data de Nascimento</label>
+        <input @bind="candidato.data_nasc_can" type="date" class="form-control" placeholder="Digite a data de Nascimento do Candidato" name="data_nasc_can" />
+        </div>
+
+    <div class="mb-3">
+        <label for="cargo" class="form-label">Cargo</label>
+        <input @bind="cargo.nome_carg" type="text" class="form-control" placeholder="Digite o nome do Cargo" name="gargo" />
+    </div>
+    <div class="mb-3">
+        <label for="salario" class="form-label">salario</label>
+        <input @bind="cargo.salario_base_carg" type="text" class="form-control" placeholder="Digite o salario do Cargo" name="salario" />
+    </div>
+
+
+
+    <div class="mb-3">
+        <label for="numero" class="form-label">Numero da Incrição</label>
+        <input @bind="numero" type="text" class="form-control" disabled=true placeholder="Numero da Inscrição" name="numero" />
+    </div>
+
+    <div class="mb-3">
+        <label for="data_ins" class="form-label">Data da Incrição</label>
+        <input @bind="data_inc" type="date" class="form-control"  placeholder="Digite o salario do Cargo" name="data_ins" />
+    </div>
+
+    <div class="mb-3">
+        <label for="nota_gerais" class="form-label">Nota das questões gerais:</label>
+        <input @bind="nota_gerais" type="number" class="form-control" placeholder="Digite a nota das gerais" name="nota_gerais" />
+    </div>
+    <div class="mb-3">
+        <label for="nota_especifica" class="form-label">Nota das questões especificas:</label>
+        <input @bind="nota_especifica" type="number" class="form-control" placeholder="Digite a nota das especificas" name="nota_especifica" />
+    </div>
+
+  
+    <button @onclick="CadastrarCandidato" type="submit" class="btn btn-primary">Cadastrar</button>
+    <button @onclick="salvar" type="submit" class="btn btn-primary">Salvar</button>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Descrição:</th>
+                <th>Valor:</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var inscricao in candidatos)
+            {
+                <tr>
+                    <td>@inscricao.numero_insc</td>
+                    <td>@inscricao.data_insc</td>
+                    <td>@inscricao.nota_conh_gerais_insc</td>
+                    <td>@inscricao.nota_conh_espec_insc</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+</div>
+
+@code {
+    public Cargo cargo = new Cargo();
+
+
+    public Candidato candidato = new Candidato();
+
+    public List<Inscricao> candidatos = new List<Inscricao>();
+    private static Random random = new Random();
+    private int numero = random.Next(1, 1000);
+    private DateTime ? data_inc { get; set; } 
+    private double ?nota_gerais { get; set; }
+    private double ?nota_especifica { get; set; }
+    public Inscricao inscricao = new Inscricao();
+
+    private async Task CadastrarCandidato()
+    {
+
+        await candidatoController.Add(candidato);
+        await cargoController.Add(cargo);
+
+        Cargo _cargo = await cargoController.CargoPorNome(cargo.nome_carg);
+        int id_carg = _cargo.id_carg;
+        inscricao.id_carg_fk = id_carg;
+        Candidato _cand = await candidatoController.CandidatoPorCpf(candidato.cpf_can);
+        int id_can = _cand.id_can;
+        inscricao.id_can_fk = id_carg;
+
+        inscricao.numero_insc = numero;
+        inscricao.data_insc = data_inc;
+        inscricao.nota_conh_gerais_insc = nota_gerais;
+        inscricao.nota_conh_espec_insc = nota_especifica;
+
+
+        candidatos.Add(inscricao);
+        candidato.Inscricoes = new List<Inscricao>();
+        candidato.Inscricoes.Add(inscricao);
+        numero = random.Next(1, 1000);
+        data_inc = null;
+        nota_especifica = null;
+        nota_gerais = null;
+
+    }
+
+    public async Task salvar()
+    {
+
+
+        await inscricaoController.Add(inscricao);
+
+     
+      
+      
+    }
+
+}

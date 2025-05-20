@@ -1,0 +1,44 @@
+using AppConcurso.Components;
+
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using AppConcurso.Controllers;
+using AppConcurso.Context;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+
+
+builder.Services.AddScoped<CandidatoController>();
+builder.Services.AddScoped<CargoController>();
+builder.Services.AddScoped<InscricaoController>();
+
+
+string mySqlConexao = builder.Configuration.GetConnectionString("BaseConexaoMySql");
+builder.Services.AddDbContextPool<ContextBD>(options =>
+    options.UseMySql(mySqlConexao, ServerVersion.AutoDetect(mySqlConexao)));
+
+// Add services to the container.
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+app.UseAntiforgery();
+
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
+
+app.Run();
